@@ -1,6 +1,7 @@
 # Service Fabric Workshop
 
 ## Intro
+
 **Name:** Jordan Nielsen  
 **Role:** Microsoft Azure Infrastructure Specialist  
 **Email:** jonielse@microsoft.com
@@ -13,16 +14,16 @@
 
 ### Microservices Discussion
 
-  * [eShop On Containers](https://github.com/dotnet-architecture/eShopOnContainers)
+* [eShop On Containers](https://github.com/dotnet-architecture/eShopOnContainers)
 
 ### Service Fabric Overview
 
-  * [PowerPoint Deck](Service-Fabric-Roadshow.pptx)
+* [PowerPoint Deck](Service-Fabric-Roadshow.pptx)
 
 ### Service Fabric Infrastructure, Governance and Creation
 
-### Roadmap (Service Fabric Mesh), DevOps, Monitoring, etc.
+### Roadmap - Service Fabric Mesh, DevOps, Monitoring
 
-### Hands on Lab
+### Hands on Lab #1
 
-  * [Instructions](/Hands-on-lab.md)
+* [Instructions](/lab1/README.md)
