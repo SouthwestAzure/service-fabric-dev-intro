@@ -27,3 +27,7 @@
 ### Hands on Lab #1
 
 * [Instructions](/lab1/README.md)
+
+### Hands on Lab #2
+
+* [Instructions](/lab2/README.md)
