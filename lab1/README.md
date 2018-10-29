@@ -51,5 +51,8 @@ More info on Service Fabric:
 - [Walkthrough](https://github.com/Microsoft/MCW-Microservices-architecture/blob/master/Hands-on%20lab/Before%20the%20HOL%20-%20Microservices%20architecture.md#task-7-validate-service-fabric-ports)
 - Setup load balancing probe (HTTP/8080)
 - Setup load balancing port (TCP/8080)
-- Browse http://**YOUR_CLUSTER**.**westus2**.cloudapp.azure.com:8080 (confirm name and region)
 - [More Info](https://docs.microsoft.com/en-us/azure/service-fabric/create-load-balancer-rule)
+
+## Task 8 - Browse and Test Application
+
+- Browse http://**YOUR_CLUSTER**.**westus2**.cloudapp.azure.com:8080 (confirm your cluster name and region)
