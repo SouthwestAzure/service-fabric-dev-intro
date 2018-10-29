@@ -7,7 +7,7 @@
 - Run Visual Studio as Administrator
 - Create a Service Fabric application
 - Choose the **Container** template
-- Type **[ ](https://hub.docker.com/r/microsoft/dotnet-samples/)** for the ImageName
+- Type **[microsoft/dotnet-samples:aspnetapp](https://hub.docker.com/r/microsoft/dotnet-samples/)** for the ImageName
 - Leave the User Name field empty
 - Enter **8090** for the Host Port - this is the port that service fabric will use to host your service
 - Enter **80** from the Container Port - this is the port that your container is serving
