@@ -1,0 +1,27 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.28010.2048
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{A07B5EB6-E848-4116-A8D0-A826331D98C6}") = "MyCoreContainer", "MyCoreContainer\MyCoreContainer.sfproj", "{83444872-17ED-4438-BA78-22732119DE0F}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{83444872-17ED-4438-BA78-22732119DE0F}.Debug|x64.ActiveCfg = Debug|x64
+		{83444872-17ED-4438-BA78-22732119DE0F}.Debug|x64.Build.0 = Debug|x64
+		{83444872-17ED-4438-BA78-22732119DE0F}.Debug|x64.Deploy.0 = Debug|x64
+		{83444872-17ED-4438-BA78-22732119DE0F}.Release|x64.ActiveCfg = Release|x64
+		{83444872-17ED-4438-BA78-22732119DE0F}.Release|x64.Build.0 = Release|x64
+		{83444872-17ED-4438-BA78-22732119DE0F}.Release|x64.Deploy.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {B196481F-F1DE-4A21-A4BC-0C29317693EB}
+	EndGlobalSection
+EndGlobal
