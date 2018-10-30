@@ -1,6 +1,6 @@
 # Deploy a .NET application in a Windows container to Azure Service Fabric
 
-This tutorial shows you how to containerize an existing ASP.NET application and package it as a Service Fabric application. Run the containers locally on the Service Fabric development cluster and then deploy the application to Azure. The application persists data in Azure SQL Database.
+This tutorial shows you how to containerize an existing ASP.NET application and package it as a Service Fabric application. Run the containers on a Service Fabric cluster running in Azure.
 
 In this tutorial, you learn how to:
 
@@ -25,11 +25,13 @@ In this tutorial, you learn how to:
 
 5. Install Azure PowerShell
 
-6 Download and run Fabrikam Fiber CallCenter
 
-	Download the Fabrikam Fiber CallCenter sample application. Click the download archive link. From the sourceCode directory in the fabrikam.zip file, extract the sourceCode.zip file and then extract the VS2015 directory to your computer.
+#Download and run Fabrikam Fiber CallCenter
 
-	Verify that the Fabrikam Fiber CallCenter application builds and runs without error. Launch Visual Studio as an administrator and open the FabrikamFiber.CallCenter.sln file. Press F5 to debug and run the application.
+Download the Fabrikam Fiber CallCenter sample application. Click the download archive link. From the sourceCode directory in the fabrikam.zip file, extract the sourceCode.zip file and then extract the VS2015 directory to your computer.
+
+Verify that the Fabrikam Fiber CallCenter application builds and runs without error. Launch Visual Studio as an administrator and open the FabrikamFiber.CallCenter.sln file. Press F5 to debug and run the application.
+
 
 # Fabrikam web sample
 
@@ -43,7 +45,8 @@ A new project Service Fabric application project FabrikamFiber.CallCenterApplica
 
 The container is now ready to be built and packaged in a Service Fabric application. Once you have the container image built on your machine, you can push it to any container registry and pull it down to any host to run.
 
-Create an Azure SQL DB
+
+# Create an Azure SQL DB
 
 When running the Fabrikam Fiber CallCenter application in production, the data needs to be persisted in a database. There is currently no way to guarantee persistent data in a container, therefore you cannot store production data in SQL Server in a container.
 
@@ -53,11 +56,11 @@ If you are behind a corporate firewall, the IP address of your development compu
 
 PowerShellCopy
 
-$subscriptionID="<subscription ID>"
+	$subscriptionID="<subscription ID>"
 
-# Sign in to your Azure account and select your subscription.
+	# Sign in to your Azure account and select your subscription.
 
-Login-AzureRmAccount -SubscriptionId $subscriptionID
+	Login-AzureRmAccount -SubscriptionId $subscriptionID
 
 # The data center and resource name for your resources.
 
@@ -119,7 +122,7 @@ New-AzureRmSqlDatabase -ResourceGroupName $dbresourcegroupname `
 
 Write-Host "Server name is $servername"
 
-Update the web config
+# Update the web config
 
 Back in the FabrikamFiber.Web project, update the connection string in the web.config file, to point to the SQL Server in the container. Update the Server part of the connection string for the server created by the previous script.
 
@@ -129,13 +132,10 @@ XMLCopy
 
 <add name="FabrikamFiber-DataWarehouse" connectionString="Server=tcp:fab-fiber-1300282665.database.windows.net,1433;Initial Catalog=call-center-db;Persist Security Info=False;User ID=ServerAdmin;Password=Password@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" providerName="System.Data.SqlClient" />
 
-Note
+# Note
 
 You can use any SQL Server you prefer for local debugging, as long as it is reachable from your host. However, localdb does not support container -> host communication. If you want to use a different SQL database when building a release build of your web application, add another connection string to your web.release.config file.
 
-Run the containerized application locally
-
-Press F5 to run and debug the application in a container on the local Service Fabric development cluster. Click Yes if presented with a message box asking to grant 'ServiceFabricAllowedUsers' group read and execute permissions to your Visual Studio project directory.
 
 Create a container registry
 
