@@ -104,7 +104,6 @@ If you are behind a corporate firewall, the IP address of your development compu
 
 Back in the FabrikamFiber.Web project, update the connection string in the web.config file, to point to the SQL Server in the container. Update the Server part of the connection string for the server created by the previous script.
 
-XMLCopy
 
 <add name="FabrikamFiber-Express" connectionString="Server=tcp:fab-fiber-1300282665.database.windows.net,1433;Initial Catalog=call-center-db;Persist Security Info=False;User ID=ServerAdmin;Password=Password@123;MultipleActiveResultSets=False;Encrypt=True;TrustServerCertificate=False;Connection Timeout=30;" providerName="System.Data.SqlClient" />
 
@@ -115,37 +114,30 @@ XMLCopy
 You can use any SQL Server you prefer for local debugging, as long as it is reachable from your host. However, localdb does not support container -> host communication. If you want to use a different SQL database when building a release build of your web application, add another connection string to your web.release.config file.
 
 
-Create a container registry
+# Create a container registry
 
 Now that the application runs locally, start preparing to deploy to Azure. Container images need to be stored in a container registry. Create an Azure container registry using the following script. The container registry name is visible by other Azure subscriptions, so it must be unique. Before deploying the application to Azure, you push the container image to this registry. When the application deploys to the cluster in Azure, the container image is pulled from this registry.
 
-PowerShellCopy
 
-# Variables
+	$acrresourcegroupname = "fabrikam-acr-group"
 
-$acrresourcegroupname = "fabrikam-acr-group"
+	$location = "southcentralus"
 
-$location = "southcentralus"
+	$registryname="fabrikamregistry$(Get-Random)"
 
-$registryname="fabrikamregistry$(Get-Random)"
+	New-AzureRmResourceGroup -Name $acrresourcegroupname -Location $location
 
-New-AzureRmResourceGroup -Name $acrresourcegroupname -Location $location
+	$registry = New-AzureRMContainerRegistry -ResourceGroupName $acrresourcegroupname -Name $registryname -EnableAdminUser -Sku Basic
 
-$registry = New-AzureRMContainerRegistry -ResourceGroupName $acrresourcegroupname -Name $registryname -EnableAdminUser -Sku Basic
 
-Create a Service Fabric cluster on Azure
+# Create a Service Fabric cluster on Azure
 
-Service Fabric applications run on a cluster, a network-connected set of virtual or physical machines. Before you can deploy the application to Azure, first create a Service Fabric cluster in Azure.
+You should already have a Service Fabric cluster created in the earlier labs. If not, follow the link below to setup a cluster. 
 
-You can:
+https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-creation-via-portal
 
-Create a test cluster from Visual Studio. This option allows you to create a secure cluster directly from Visual Studio with your preferred configurations.
 
-Create a secure cluster from a template
-
-This tutorial creates a cluster from Visual Studio, which is ideal for test scenarios. If you create a cluster some other way or use an existing cluster, you can copy and paste your connection endpoint or choose it from your subscription.
-
-When creating the cluster, choose a SKU that supports running containers. The Windows Server OS on your cluster nodes must be compatible with the Windows Server OS of your container. To learn more, see Windows Server container OS and host OS compatibility. By default, this tutorial creates a Docker image based on Windows Server 2016 LTSC. Containers based on this image will run on clusters created with Windows Server 2016 Datacenter with Containers. However, if you create a cluster or use an existing cluster based on Windows Server Datacenter Core 1709 with Containers, you must change the Windows Server OS image that the container is based on. Open the Dockerfile in the FabrikamFiber.Web project, comment out the existing FROM statement (based on windowsservercore-ltsc) and uncomment the FROM statement based on windowsservercore-1709.
+#
 
 Right-click on the FabrikamFiber.CallCenterApplication application project in the Solution Explorer and choose Publish.
 
