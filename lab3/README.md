@@ -1,4 +1,4 @@
-Tutorial: Deploy a .NET application in a Windows container to Azure Service Fabric
+##Deploy a .NET application in a Windows container to Azure Service Fabric
 
 This tutorial shows you how to containerize an existing ASP.NET application and package it as a Service Fabric application. Run the containers locally on the Service Fabric development cluster and then deploy the application to Azure. The application persists data in Azure SQL Database.
 
@@ -13,15 +13,15 @@ In this tutorial, you learn how to:
 4. Deploy a Service Fabric application to Azure
 
 
-Prerequisites
+##Prerequisites
 
-If you don't have an Azure subscription, create a free account
+1. If you don't have an Azure subscription, create a free account
 
-Install Docker CE for Windows so that you can run containers on Windows 10.
+2. Install Docker CE for Windows so that you can run containers on Windows 10.
 
-Install Service Fabric runtime version 6.2 or later and the Service Fabric SDK version 3.1 or later.
+3. Install Service Fabric runtime version 6.2 or later and the Service Fabric SDK version 3.1 or later.
 
-Install Visual Studio 2017 version 15.7 or later with the Azure development and ASP.NET and web development workloads.
+4. Install Visual Studio 2017 version 15.7 or later with the Azure development and ASP.NET and web development workloads.
 
 Install Azure PowerShell
 
