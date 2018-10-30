@@ -1,4 +1,4 @@
-##Deploy a .NET application in a Windows container to Azure Service Fabric
+# Deploy a .NET application in a Windows container to Azure Service Fabric
 
 This tutorial shows you how to containerize an existing ASP.NET application and package it as a Service Fabric application. Run the containers locally on the Service Fabric development cluster and then deploy the application to Azure. The application persists data in Azure SQL Database.
 
@@ -13,7 +13,7 @@ In this tutorial, you learn how to:
 4. Deploy a Service Fabric application to Azure
 
 
-##Prerequisites
+# Prerequisites
 
 1. If you don't have an Azure subscription, create a free account
 
@@ -23,15 +23,15 @@ In this tutorial, you learn how to:
 
 4. Install Visual Studio 2017 version 15.7 or later with the Azure development and ASP.NET and web development workloads.
 
-Install Azure PowerShell
+5. Install Azure PowerShell
 
-Download and run Fabrikam Fiber CallCenter
+6 Download and run Fabrikam Fiber CallCenter
 
-Download the Fabrikam Fiber CallCenter sample application. Click the download archive link. From the sourceCode directory in the fabrikam.zip file, extract the sourceCode.zip file and then extract the VS2015 directory to your computer.
+	Download the Fabrikam Fiber CallCenter sample application. Click the download archive link. From the sourceCode directory in the fabrikam.zip file, extract the sourceCode.zip file and then extract the VS2015 directory to your computer.
 
-Verify that the Fabrikam Fiber CallCenter application builds and runs without error. Launch Visual Studio as an administrator and open the FabrikamFiber.CallCenter.sln file. Press F5 to debug and run the application.
+	Verify that the Fabrikam Fiber CallCenter application builds and runs without error. Launch Visual Studio as an administrator and open the FabrikamFiber.CallCenter.sln file. Press F5 to debug and run the application.
 
-Fabrikam web sample
+# Fabrikam web sample
 
 Containerize the application
 
