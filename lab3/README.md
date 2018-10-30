@@ -137,136 +137,83 @@ You should already have a Service Fabric cluster created in the earlier labs. If
 https://docs.microsoft.com/en-us/azure/service-fabric/service-fabric-cluster-creation-via-portal
 
 
-#
+# Allow your application running in Azure to access the SQL DB
 
-Right-click on the FabrikamFiber.CallCenterApplication application project in the Solution Explorer and choose Publish.
+Next, you need to enable the application running in Azure to access the SQL DB. Create a virtual network service endpoint for the Service Fabric cluster and then create a rule to allow that endpoint to access the SQL DB.
 
-Sign in by using your Azure account so that you can have access to your subscription(s).
 
-Select the dropdown for the Connection Endpoint and select the Create New Cluster... option.
+	# Create a virtual network service endpoint
 
-In the Create cluster dialog, modify the following settings:
+	$clusterresourcegroup = "fabrikamfiber.callcenterapplication_RG"
 
-Specify the name of your cluster in the Cluster Name field, as well as the subscription and location you want to use.
+	$resource = Get-AzureRmResource -ResourceGroupName $clusterresourcegroup -ResourceType Microsoft.Network/virtualNetworks | Select-Object -first 1
 
-Optional: You can modify the number of nodes. By default you have three nodes, the minimum required for testing Service Fabric scenarios.
+	$vnetName = $resource.Name
 
-Select the Certificate tab. In this tab, type a password to use to secure the certificate of your cluster. This certificate helps make your cluster secure. You can also modify the path to where you want to save the certificate. Visual Studio can also import the certificate for you, since this is a required step to publish the application to the cluster.
+	Write-Host 'Virtual network name: ' $vnetName
 
-Select the VM Detail tab. Specify the password you would like to use for the Virtual Machines (VM) that make up the cluster. The user name and password can be used to remotely connect to the VMs. You must also select a VM machine size and can change the VM image if needed.
+	# Get the virtual network by name.
 
-In the Advanced tab, list the application port to open in the load balancer when the cluster deploys. In Solution Explorer, open FabrikamFiber.Web->PackageRoot->ServiceManifest.xml. The port for the web front-end is listed in Endpoint. You can also add an existing Application Insights key to be used to route application log files to.
+	$vnet = Get-AzureRmVirtualNetwork `
 
-When you are done modifying settings, select the Create button.
+ 	-ResourceGroupName $clusterresourcegroup `
 
-Creation takes several minutes to complete; the output window will indicate when the cluster is fully created.
+ 	-Name $vnetName
 
-Allow your application running in Azure to access the SQL DB
+	Write-Host "Get the subnet in the virtual network:"
 
-Previously, you created a SQL firewall rule to give access to your application running locally. Next, you need to enable the application running in Azure to access the SQL DB. Create a virtual network service endpoint for the Service Fabric cluster and then create a rule to allow that endpoint to access the SQL DB.
+	# Get the subnet, assume the first subnet contains the Service Fabric cluster.
 
-PowerShellCopy
+	$subnet = Get-AzureRmVirtualNetworkSubnetConfig -VirtualNetwork $vnet | Select-Object -first 1
 
-# Create a virtual network service endpoint
+	$subnetName = $subnet.Name
 
-$clusterresourcegroup = "fabrikamfiber.callcenterapplication_RG"
+	$subnetID = $subnet.Id
 
-$resource = Get-AzureRmResource -ResourceGroupName $clusterresourcegroup -ResourceType Microsoft.Network/virtualNetworks | Select-Object -first 1
+	$addressPrefix = $subnet.AddressPrefix
 
-$vnetName = $resource.Name
+	Write-Host "Subnet name: " $subnetName " Address prefix: " $addressPrefix " ID: " $subnetID
 
-Write-Host 'Virtual network name: ' $vnetName
+	# Assign a Virtual Service endpoint 'Microsoft.Sql' to the subnet.
 
-# Get the virtual network by name.
+	$vnet = Set-AzureRmVirtualNetworkSubnetConfig `
 
-$vnet = Get-AzureRmVirtualNetwork `
+ 	-Name $subnetName `
 
- -ResourceGroupName $clusterresourcegroup `
+ 	-AddressPrefix  $addressPrefix `
 
- -Name $vnetName
+ 	-VirtualNetwork $vnet `
 
-Write-Host "Get the subnet in the virtual network:"
+ 	-ServiceEndpoint Microsoft.Sql | Set-AzureRmVirtualNetwork
 
-# Get the subnet, assume the first subnet contains the Service Fabric cluster.
+	$vnet.Subnets[0].ServiceEndpoints; # Display the first endpoint.
 
-$subnet = Get-AzureRmVirtualNetworkSubnetConfig -VirtualNetwork $vnet | Select-Object -first 1
+	# Add a SQL DB firewall rule for the virtual network service endpoint
 
-$subnetName = $subnet.Name
+	$subnet = Get-AzureRmVirtualNetworkSubnetConfig `
 
-$subnetID = $subnet.Id
+ 	-Name  $subnetName `
 
-$addressPrefix = $subnet.AddressPrefix
+ 	-VirtualNetwork $vnet;
 
-Write-Host "Subnet name: " $subnetName " Address prefix: " $addressPrefix " ID: " $subnetID
+	$VNetRuleName="ServiceFabricClusterVNetRule"
 
-# Assign a Virtual Service endpoint 'Microsoft.Sql' to the subnet.
+	$vnetRuleObject1 = New-AzureRmSqlServerVirtualNetworkRule `
 
-$vnet = Set-AzureRmVirtualNetworkSubnetConfig `
+ 	-ResourceGroupName $dbresourcegroupname `
 
- -Name $subnetName `
+ 	-ServerName  $servername `
 
- -AddressPrefix  $addressPrefix `
+ 	-VirtualNetworkRuleName $VNetRuleName `
 
- -VirtualNetwork $vnet `
+ 	-VirtualNetworkSubnetId $subnetID;
 
- -ServiceEndpoint Microsoft.Sql | Set-AzureRmVirtualNetwork
 
-$vnet.Subnets[0].ServiceEndpoints; # Display the first endpoint.
-
-# Add a SQL DB firewall rule for the virtual network service endpoint
-
-$subnet = Get-AzureRmVirtualNetworkSubnetConfig `
-
- -Name  $subnetName `
-
- -VirtualNetwork $vnet;
-
-$VNetRuleName="ServiceFabricClusterVNetRule"
-
-$vnetRuleObject1 = New-AzureRmSqlServerVirtualNetworkRule `
-
- -ResourceGroupName $dbresourcegroupname `
-
- -ServerName  $servername `
-
- -VirtualNetworkRuleName $VNetRuleName `
-
- -VirtualNetworkSubnetId $subnetID;
-
-Deploy the application to Azure
+# Deploy the application to Azure
 
 Now that the application is ready, you can deploy it to the cluster in Azure directly from Visual Studio. In Solution Explorer, right-click the FabrikamFiber.CallCenterApplication application project and select Publish. In Connection Endpoint, select the endpoint of the cluster that you created previously. In Azure Container Registry, select the container registry that you created previously. Click Publish to deploy the application to the cluster in Azure.
 
-Publish application
 
 Follow the deployment progress in the output window. When the application is deployed, open a browser and type in the cluster address and application port. For example, http://fabrikamfibercallcenter.southcentralus.cloudapp.azure.com:8659/.
 
-Fabrikam web sample
 
-Set up Continuous Integration and Deployment (CI/CD) with a Service Fabric cluster
-
-To learn how to use Azure DevOps to configure CI/CD application deployment to a Service Fabric cluster, see Tutorial: Deploy an application with CI/CD to a Service Fabric cluster. The process described in the tutorial is the same for this (FabrikamFiber) project, just skip downloading the Voting sample and substitute FabrikamFiber as the repository name instead of Voting.
-
-Clean up resources
-
-If you're done, be sure to remove all the resources you created. The simplest way to is to remove the resources groups that contain the Service Fabric cluster, Azure SQL DB, and Azure Container Registry.
-
-PowerShellCopy
-
-$dbresourcegroupname = "fabrikam-fiber-db-group"
-
-$acrresourcegroupname = "fabrikam-acr-group"
-
-$clusterresourcegroupname="fabrikamcallcentergroup"
-
-# Remove the Azure SQL DB
-
-Remove-AzureRmResourceGroup -Name $dbresourcegroupname
-
-# Remove the container registry
-
-Remove-AzureRmResourceGroup -Name $acrresourcegroupname
-
-# Remove the Service Fabric cluster
-
-Remove-AzureRmResourceGroup -Name $clusterresourcegroupname
