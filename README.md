@@ -15,10 +15,13 @@
 ### Microservices Discussion
 
 * [eShop On Containers](https://github.com/dotnet-architecture/eShopOnContainers)
+* [Sam Newman Video](https://youtu.be/PFQnNFe27kU)
+* [Service Bus and Eventing Comparison by Clemens Vasters](https://azure.microsoft.com/en-us/blog/events-data-points-and-messages-choosing-the-right-azure-messaging-service-for-your-data/)
 
 ### Service Fabric Overview
 
-* [PowerPoint Deck](Service-Fabric-Roadshow.pptx)
+* [Service Fabric Intro Deck](Service-Fabric-Roadshow.pptx)
+* [Infra Insight and Best Practices](Infra-Insight-and-Best-Practices.pptx)
 
 ### Service Fabric Infrastructure, Governance and Creation
 
